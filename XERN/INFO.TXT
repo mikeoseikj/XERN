@@ -1,0 +1,70 @@
+
+XERN is a simple non-pre-emptive unix-like ARM OS written in QEMU versatilepb machine(choice was based on availability of reference sources) to help me gain and improve my understanding of operating systems. The kernel comes with no drivers for specific keyboard and LCD devices but it comes with a UART I/O driver, SDCARD driver and TIMER driver and uses an EXT2 filesytem. It has 39 syscalls. Some of this syscalls are 
+specific to this OS.
+
+============================================== SYSCALLS ==================================================
+
+getpid, getppid, getuid, getgid, setuid, setgid, fork, exec, wait, exit, pipe, kill, sleep, sbrk,
+creat, mkdir,rmdir, link, unlink, symlink, readlink, open, read, write, close, lseek, dup2, getdent, stat, 
+chdir, getcwd, chown, chmod, fexist, readpass, list_processes, get_boottime, setlogin, getlogin
+
+
+=========================================== USER BINARIES ================================================
+
+cat, chmod, chown, cp, echo, grep, help, id, kill, ln, locate, ls, mkdir, mv, ps, pwd, readlink, rm, rmdir, sleep, stat, 
+unlink, uptime, whoami
+Others: init, login, sh, loop and test
+
+-----------------------------------------------------------------------------------------------------------
+
+Login accounts: 
+
+username       password
+-------        --------
+root           toor
+mik3           31337
+
+How to start OS:
+Prerequisties:
+=> qemu-system-arm
+
+=>> cd to the build folder
+=>> Enter './run.sh' to start it in QEMU  
+
+============================================= HOW TO COMPILE ========================================
+
+--------------------------------------------------[KERNEL]---------------------------------------------
+Prerequisites:
+
+=> qemu-system-arm
+=> arm-none-eabi-gcc
+=> arm-none-eabi-ld 
+=> arm-none-eabi-objcopy
+=> make
+Others:  rm
+
+=>> cd to the XERN folder
+=>> Enter 'make' to compile
+=>> cd to the build folder
+=>> enter './run.sh' to start OS in QEMU
+
+Note: "/usr/lib/gcc/arm-none-eabi/8.3.1/libgcc.a" has to exist.
+
+--------------------------------------------[USER PROGRAMS]-----------------------------------------
+
+Prerequisites:
+
+=> arm-none-eabi-gcc 
+=> arm-none-eabi-ld
+
+=>> cd to the UPROGS/src folder
+=>> Enter './compile.sh tool'. Don't add the .c 
+=>> Compiled user programs are stored at UPROGS/bin
+
+Note: "/usr/lib/gcc/arm-none-eabi/8.3.1/libgcc.a" has to exist.
+
+Mount the virtual SDCARD in the build folder and copy the compiled program to it
+
+                          
+
+
