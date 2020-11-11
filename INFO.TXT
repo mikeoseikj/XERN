@@ -64,8 +64,6 @@ Prerequisites:
 Note: "/usr/lib/gcc/arm-none-eabi/8.3.1/libgcc.a" has to exist.
 
 Mount the virtual SDCARD in the build folder and copy the compiled program to it
-
-NOTE: I USED SUBLIME AS MY TEXT EDITOR WHICH CAUSES SOME FORMATTING ISSUES IN OTHER TEXT EDITORS.
                           
 
 
