@@ -1,6 +1,6 @@
 CC = arm-none-eabi-gcc
 CFLAGS = -c -mcpu=arm926ej-s
-LIBGCC = /usr/lib/gcc/arm-none-eabi/8.3.1/libgcc.a
+LIBGCC = /usr/lib/gcc/arm-none-eabi/9.2.1/libgcc.a
 LD = arm-none-eabi-ld
 OBJCOPY = arm-none-eabi-objcopy
 RM = RM

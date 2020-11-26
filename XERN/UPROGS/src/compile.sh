@@ -7,7 +7,7 @@ then
 	exit
 fi
 
-LIBGCC="/usr/lib/gcc/arm-none-eabi/8.3.1/libgcc.a"  # USE: eg: To handle division by zero
+LIBGCC="/usr/lib/gcc/arm-none-eabi/9.2.1/libgcc.a"  # USE: eg: To handle division by zero
 arm-none-eabi-as -mcpu=arm926ej-s initcode.s -o initcode.o -w
 arm-none-eabi-gcc -c -mcpu=arm926ej-s -o lib/string.o lib/string.c  -w
 arm-none-eabi-gcc -c -mcpu=arm926ej-s -o lib/io.o lib/io.c -w

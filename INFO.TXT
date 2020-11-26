@@ -1,12 +1,13 @@
 
-XERN is a simple non-pre-emptive unix-like ARM OS written in QEMU versatilepb machine(choice was based on availability of reference sources) to help me gain and improve my understanding of operating systems. The kernel comes with no drivers for specific keyboard and LCD devices but it comes with a UART I/O driver, SDCARD driver and TIMER driver and uses an EXT2 filesytem. It has 39 syscalls. Some of this syscalls are 
-specific to this OS.
+XERN is a simple non-pre-emptive unix-like ARM OS written in QEMU versatilepb machine(choice was based on availability of reference sources) to help me gain and improve my understanding of operating systems. The kernel comes with no drivers for specific keyboard and LCD devices but it comes with a UART I/O driver, SDCARD driver and TIMER driver and also uses an EXT2 filesytem. It has 39 syscalls. Some of these syscalls are specific to this OS.
 
 ============================================== SYSCALLS ==================================================
 
 getpid, getppid, getuid, getgid, setuid, setgid, fork, exec, wait, exit, pipe, kill, sleep, sbrk,
 creat, mkdir,rmdir, link, unlink, symlink, readlink, open, read, write, close, lseek, dup2, getdent, stat, 
 chdir, getcwd, chown, chmod, fexist, readpass, list_processes, get_boottime, setlogin, getlogin
+
+others: getpwd, print functions, string functions etc.
 
 
 =========================================== USER BINARIES ================================================
@@ -48,7 +49,7 @@ Others:  rm
 =>> cd to the build folder
 =>> enter './run.sh' to start OS in QEMU
 
-Note: "/usr/lib/gcc/arm-none-eabi/8.3.1/libgcc.a" has to exist.
+Note: "/usr/lib/gcc/arm-none-eabi/9.2.1/libgcc.a" has to exist. -- (change the version to the one available on your system(9.2.1) )  
 
 --------------------------------------------[USER PROGRAMS]-----------------------------------------
 
@@ -61,7 +62,7 @@ Prerequisites:
 =>> Enter './compile.sh tool'. Don't add the .c 
 =>> Compiled user programs are stored at UPROGS/bin
 
-Note: "/usr/lib/gcc/arm-none-eabi/8.3.1/libgcc.a" has to exist.
+Note: "/usr/lib/gcc/arm-none-eabi/9.2.1/libgcc.a" has to exist. -- (change the version to the one available on your system(9.2.1) )
 
 Mount the virtual SDCARD in the build folder and copy the compiled program to it
                           

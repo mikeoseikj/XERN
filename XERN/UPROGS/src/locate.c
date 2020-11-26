@@ -7,7 +7,7 @@
 
 void find_patterns(char *root, char *pattern)
 {
-	char *path = sbrk(1); // We will use around 3KiB -- waste of memory
+	char *path = sbrk(1); // We will use around 3KiB -- malloc() has not been implemented yet
 
 	int fd = open(root, O_DIRECTORY);
 	if(fd < 0)
@@ -18,7 +18,7 @@ void find_patterns(char *root, char *pattern)
 
 	while(getdent(fd, &dir_entry) > 0)
 	{
-		if(strcmp(dir_entry.d_name, ".") == 0 || strcmp(dir_entry.d_name, "..") == 0)
+		if(strcmp(dir_entry.d_name, ".") == 0 || strcmp(dir_entry.d_name, "..") == 0 || strcmp(dir_entry.d_name, "root") == 0)
 			continue;
 
 		strncpy(path, root, 2048);
@@ -39,6 +39,7 @@ void find_patterns(char *root, char *pattern)
 				printf("%s\n", out);
 
 			find_patterns(path, pattern);
+
 		}
 		else
 		{
@@ -46,6 +47,7 @@ void find_patterns(char *root, char *pattern)
 			if(strstr(out, pattern))
 				printf("%s\n", out);
 		}
+		memset(path, 0, strlen(path));
 	}
 	close(fd);
 
@@ -58,7 +60,7 @@ int main(int argc, char *argv[])
 		printf("usage: %s  <search pattern>\n", argv[0]);
 		return -1;
 	}
-	char *root = ".";
+	char *root = "/root";
 	find_patterns(root, argv[1]);
 
 }
