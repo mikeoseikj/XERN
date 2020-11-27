@@ -1,7 +1,7 @@
 #ifndef HANDLERS_H
 #define HANDLERS_H
 
-int irq_chandler()
+void irq_chandler()
 {
     int status = PIC_STATUS;
     if(status & (1<<4))
