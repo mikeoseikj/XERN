@@ -60,7 +60,7 @@ int kexec(char *path, char *argv[])
     struct proc *t_p = &procs[0];  // using proc[0] as a tmp storage for page allocation because it is not used by the kernel
 
     int off;
-    for(int i = 0, off=ehdr.e_phoff; i < ehdr.e_phnum; i++, off+=sizeof(phdr))
+    for(int i = 0, off = ehdr.e_phoff; i < ehdr.e_phnum; i++, off += sizeof(phdr))
     {
    	    klseek(fd, off, SEEK_SET);
         if(kread(fd, (char *)&phdr, sizeof(phdr)) < sizeof(phdr))
