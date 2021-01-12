@@ -96,13 +96,13 @@ void sdc_write(int sector, char *buf)
     	status = sdc_getreg(MCI_STATUS); 
     	status_err = status & (SDI_STA_DCRCFAIL | SDI_STA_DTIMEOUT);
     }
-   sdc_setreg(MCI_CLEAR, 0xFFFFFFFF);
+    sdc_setreg(MCI_CLEAR, 0xFFFFFFFF);
 }
 
 
 
 /* Functions for the reading and writing of 2KiB filesystem blocks */
-int getblock(int blk, char *buf)
+void getblock(int blk, char *buf)
 {
     sdc_read(4*blk, buf);
     sdc_read(4*blk + 1, (char *)buf + 512);
@@ -110,7 +110,7 @@ int getblock(int blk, char *buf)
     sdc_read(4*blk + 3, (char *)buf + 1536);
 }
 
-int putblock(int blk, char *buf)
+void putblock(int blk, char *buf)
 {
     sdc_write(4*blk, buf);
     sdc_write(4*blk + 1, buf + 512);
