@@ -34,7 +34,7 @@ int start_init_process(char *path)
     strncpy(np->name, path, 255);
 
     int off;
-    for(int i = 0, off=ehdr.e_phoff; i < ehdr.e_phnum; i++, off+=sizeof(phdr))
+    for(int i = 0, off = ehdr.e_phoff; i < ehdr.e_phnum; i++, off += sizeof(phdr))
     {
    	    klseek(fd, off, SEEK_SET);
         if(kread(fd, (char *)&phdr, sizeof(phdr)) < sizeof(phdr))
