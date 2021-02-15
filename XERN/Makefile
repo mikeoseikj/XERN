@@ -3,7 +3,6 @@ CFLAGS = -c -mcpu=arm926ej-s
 LIBGCC = /usr/lib/gcc/arm-none-eabi/9.2.1/libgcc.a
 LD = arm-none-eabi-ld
 OBJCOPY = arm-none-eabi-objcopy
-RM = RM
 
 OBJS = start.o mmu.o handlers.o timer.o uart.o sdcard.o filesystem.o main.o
 
