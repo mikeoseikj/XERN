@@ -1,5 +1,5 @@
 
-XERN is a simple non-pre-emptive unix-like ARM OS written in QEMU versatilepb machine(choice was based on availability of reference sources) to help me gain and improve my understanding of operating systems. The kernel comes with no drivers for specific keyboard and LCD devices but it comes with a UART I/O driver, SDCARD driver and TIMER driver and also uses an EXT2 filesytem. It has 39 syscalls. Some of these syscalls are specific to this OS.
+XERN is a simple non-pre-emptive unix-like ARM OS I wrote for QEMU versatilepb machine(choice was based on availability of reference sources) to test my basic understanding of operating systems and also for fun. The kernel comes with no drivers for any specific keyboard and LCD devices but it comes with a UART I/O driver, SDCARD driver and TIMER driver and also uses an EXT2 filesytem. It has 39 syscalls. Some of these syscalls are specific to this OS.
 
 ============================================== SYSCALLS ==================================================
 
