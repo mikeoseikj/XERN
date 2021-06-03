@@ -53,27 +53,31 @@ void UART0_handler()
     
     while((uart_get_flag(p_com0) & RX_FULL) == 0);
     char c = uart_get_datareg(p_com0);
-
-    if(c == CTRL_C && curr_proc->pid > 1)
+    if(c == CTRL_C && curr_proc->pid > 1)   
     {
         kputs("^C");
-        if(! p_com0->ex_get) // only when user is explicitly getting input
+        if(curr_proc->pid == 2) // don't add first instance of the sh program
         {
-            kputs("\n");
-    
-            if((get_spsr() & 0x1F) == 0x13)  // if coming from SVC mode
-            {
-                slimit = 0;  // To stop sleep syscall if currently in use 
-                curr_proc->tf->lr = user_exit_addr;
-            }
-
-            if((get_spsr() & 0x1F) == 0x10) // if coming from USR mode 
-                exit_currproc();
-
-            return;
+            c = '\r';
+            p_com0->ex_get = 1;
+            goto do_operation;
         }
-        c = '\r';
-        goto do_operation;
+        if((get_spsr() & 0x1F) == 0x13)  // if coming from SVC mode
+        {
+            slimit = 0;  // To stop sleep syscall if currently in use 
+            curr_proc->tf->lr = user_exit_addr;
+        }
+
+        if((get_spsr() & 0x1F) == 0x10) // if coming from USR mode 
+                exit_currproc();
+    
+        if(p_com0->ex_get)
+        {
+            c = '\r';
+            goto do_operation;
+        }
+        kputs("\n");
+        return;
     }
 
     /* A simple way to identify special keys like 'delete' */

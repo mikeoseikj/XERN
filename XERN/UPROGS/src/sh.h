@@ -29,21 +29,23 @@ void rmldspaces(char input[], char output[])
 
 }
 
+// spaces are not removed from strings in quotes. ie: "  abc  "
 void remove_multiple_spaces(char *input, char *output)
 {
 	char tmp[strlen(input) + 1];
 	rmldspaces(input, tmp);
 
-	int count = 0;
+	int count = 0, quote = 0;
 	for(int i = 0; i < strlen(tmp); i++)
 	{
-		output[count] = tmp[i];
-		if((output[count] == tmp[i+1]) && (output[count] == ' '))
+		if(tmp[i] == '\"')
 		{
-			output[count] = tmp[i];
-			continue;
+			if(!(i > 0 && tmp[i-1] == '\\'))
+				quote++;
 		}
-
+		output[count] = tmp[i];
+		if((output[count] == tmp[i+1]) && (output[count] == ' ') && (quote % 2) == 0) // don't remove space if we are in a quote
+			continue;
 		count++;
 	}
 	output[count] = 0;
@@ -80,16 +82,20 @@ int get_progname(char *input, char output[])
 	
 }
 
-void get_pipes(char *input, char cmds[][256])
+int get_pipes(char *input, char cmds[][256])
 {
 	char sto[strlen(input) + 1];
 	char *str = &sto[0];
 	strcpy(str, input);
 
+    int quotes = 0;
 	int pos = 0;
 	for(int i = 0; i < strlen(str); i++)
 	{
-		if(str[i] == '|')
+		if(str[i] == '\"')
+			quotes++;
+
+		if(str[i] == '|' && (quotes % 2) == 0)
 		{
 			str[i] = 0;
 			rmldspaces(str, cmds[pos]);
@@ -97,78 +103,130 @@ void get_pipes(char *input, char cmds[][256])
 			i = -1;
 
 			if(strlen(cmds[pos]) == 0)
-				continue;
+			{
+				puts("error: unexpected '|' in input\n");
+				return 0;
+			}
 
 			pos++;
 		}
 		if(pos == 15)
 		{
 			setbuf_null(cmds, pos);
-			return;
+			return 1;
 		}			
 	}
 	if(strlen(str))
 	{
 		rmldspaces(str, cmds[pos]);
 		setbuf_null(cmds, pos+1);
-		return;
+		return 1;
 	}
-
 	setbuf_null(cmds, pos);
+	return 1;
 }
 
 
 
-void get_cmd_args(char *input, char words[][256])  // MAX arg for exec() is 16-1 (argv[0])
+int get_cmd_args(char *input, char words[][256])  // MAX arg for exec() is 16-1 (argv[0])
 {
 	char sto[strlen(input) + 1];
 	char *str = &sto[0];
 	strcpy(str, input);
 	
-	int pos = 0;
-	int is_apos = 0;
+	int pos = 0, quotes = 0;
 	for(int i = 0; i < strlen(str); i++)
 	{
-		
+		if(str[i] == '\\')
+		{
+			int success = 1;
+			switch(str[i+1])
+			{
+				case 'f':
+					str[i] = '\f';
+					break;
+				case 'r':
+					str[i] = '\r';
+					break;
+				case 'n':
+					str[i] = '\n';
+					break;
+				case 't':
+					str[i] = '\t';
+					break;
+				case 'v':
+					str[i] = '\v';
+					break;
+				case 'b':
+					str[i] = '\b';
+					break;
+				case 'a':
+					str[i] = '\a';
+					break;
+				case '\\':
+					str[i] = '\\';
+					break;
+				case '"':
+					str[i] = '\"';
+					break;
+				case '\'':
+					str[i] = '\'';
+					break;
+				default:
+					success = 0;
+			}
+			if(success)
+			{
+				// shift string to the left by one character;
+				for(int j = i+1; j <= strlen(str); j++)	// +null byte
+				str[j] = str[j+1];
+				continue;
+			}
+			
+		}
 		if(str[i] == '\"')
 		{
 			str[i] = ' ';
-			is_apos++;
-			continue;
+			quotes++;
 		}
 
+		
 		if(str[i] == ' ')
 		{
-			if(is_apos == 1)  //  if a " has already been found
+			if((quotes % 2) == 1)  //  if a " has already been found
 				continue;
 
-			is_apos = 0;
 			str[i] = 0;
-			remove_multiple_spaces(str, words[pos]);
+			rmldspaces(str, words[pos]);
 			str += i+1; 
 			i = -1;
 
 			if(strlen(words[pos]) == 0)
 				continue;
-
 			pos++;
-
 		}
 
 		if(pos == 14)
 		{
 			setbuf_null(words, pos);
-			return;
+			goto end;
 		}
 	}
 	if(strlen(str))
 	{
-		remove_multiple_spaces(str, words[pos]);
+		rmldspaces(str, words[pos]);
 		setbuf_null(words, pos+1);
-		return;
+		goto end;
 	}
 
 	setbuf_null(words, pos);
+	end:
+		if((quotes % 2) == 1)
+		{
+			puts("error: unexpected '\"' in input\n");
+			return 0;
+		}
+		return 1;
 }
 
 
@@ -206,7 +264,8 @@ void execute_pipeline(char pipecmds[][256], int pos, int in_fd)
     	This won't be a problem in the end because of the nature of the 'get_cmd_args()' and related functions functions
     */
     char *args_str = pipecmds[pos]+off;
-	get_cmd_args(args_str, args);
+	if(!get_cmd_args(args_str, args))
+		return;
 	
 	if(isbuf_null(pipecmds, pos+1))  // IF IT IS THE LAST PIPED COMMAND?
 	{

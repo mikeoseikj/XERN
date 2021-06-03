@@ -5,15 +5,15 @@ XERN is a simple non-pre-emptive unix-like ARM OS I wrote for QEMU versatilepb m
 
 getpid, getppid, getuid, getgid, setuid, setgid, fork, exec, wait, exit, pipe, kill, sleep, sbrk,
 creat, mkdir,rmdir, link, unlink, symlink, readlink, open, read, write, close, lseek, dup2, getdent, stat, 
-chdir, getcwd, chown, chmod, fexist, readpass, list_processes, get_boottime, setlogin, getlogin
+chdir, getcwd, chown, chmod, fexist, readpass, get_procs, get_boottime, setlogin, getlogin
 
 others: getpwd, print functions, string functions etc.
 
 
 =========================================== USER BINARIES ================================================
 
-cat, chmod, chown, cp, echo, grep, help, id, kill, ln, locate, ls, mkdir, mv, ps, pwd, readlink, rm, rmdir, sleep, stat, 
-unlink, uptime, whoami
+cat, chmod, chown, cp, echo, grep, fgrep, help, id, kill, ln, locate, flocate, ls, mkdir, mv, ps, pwd,
+readlink, rm, rmdir, sleep, stat, unlink, uptime, whoami
 Others: init, login, sh, loop and test
 
 -----------------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ Prerequisties:
 =>> cd to the build folder
 =>> Enter './run.sh' to start it in QEMU  
 
-============================================= HOW TO COMPILE ========================================
+============================================= HOW TO COMPILE ==========================================
 
 --------------------------------------------------[KERNEL]---------------------------------------------
 Prerequisites:

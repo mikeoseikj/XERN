@@ -24,7 +24,7 @@ int start_init_process(char *path)
     if(! np)
       return 0; // FALSE
 
-    strcpy(curr_proc->loginname, "no_name");
+    strcpy(curr_proc->owner_name, "no_name");
     np->state = RUNNABLE;
     np->priority = 1;
     np->parent = curr_proc;

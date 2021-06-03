@@ -2,6 +2,7 @@
 #define UNISTD_H
 
 #include "dirent.h"
+#include "process.h"
 
 /* Kernel functions */
 int  syscall(int number, ...);
@@ -20,7 +21,7 @@ int  kill(int pid);
 void sleep(int seconds);
 char *sbrk(int increment);
 int  readpass(char *buf, int count);
-void list_processes();
+int  get_procs(struct process *processes[]);
 unsigned int get_boottime();
 int  setlogin(char *username);
 void getlogin(char buf[]);

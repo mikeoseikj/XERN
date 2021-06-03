@@ -2,6 +2,7 @@
 #include "include/unistd.h"
 #include "include/fcntl.h"
 #include "include/string.h"
+#include "include/regex.h"
 
 
 void grep(int fd, char *pattern)
@@ -9,7 +10,7 @@ void grep(int fd, char *pattern)
 	char line[1025];
 	while(readline(fd, line, 1024) >= 0)
 	{
-		if(strstr(line, pattern))
+		if(regex_match(line, pattern))
 			printf("%s\n", line);
 	}
 }
@@ -66,7 +67,7 @@ int main(int argc, char *argv[])
 
 		while(buf_readline(buf, line, 1024) >= 0)
 		{
-			if(strstr(line, pattern))
+			if(regex_match(line, pattern))
 				printf("%s\n", line);
 		}
 

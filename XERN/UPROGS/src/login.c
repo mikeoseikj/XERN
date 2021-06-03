@@ -36,5 +36,5 @@ int main()
 			}
 		}		
 	}
-	puts("Login failed!\n");
+	puts("\nLogin incorrect\n");
 }

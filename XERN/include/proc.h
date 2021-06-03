@@ -67,7 +67,7 @@ struct proc
 	char name[256];
 	int kstack[STACKSIZE];
 	unsigned int brk_start;
-	char loginname[65];
+	char owner_name[65];
 };
 
 #endif
