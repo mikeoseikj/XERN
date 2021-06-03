@@ -24,7 +24,7 @@ int kfork()
 	np->gid = curr_proc->gid;
     np->cwd = curr_proc->cwd;
     strncpy(np->name, curr_proc->name, 255);
-    strncpy(np->loginname, curr_proc->loginname, 64);
+    strncpy(np->owner_name, curr_proc->owner_name, 64);
 
     np->context->sp = &(np->kstack[STACKSIZE - 30]);  // exclude context->sp
 

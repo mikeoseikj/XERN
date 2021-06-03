@@ -1,4 +1,5 @@
 #include "include/globals.h"
+#include "include/process.h"
 
 int kgetpid()
 {
@@ -19,7 +20,6 @@ int kgetgid()
 {
 	return curr_proc->gid;
 }
-
 
 int ksetuid(int uid)
 {
@@ -46,7 +46,6 @@ void ksleep(unsigned int seconds)
 	slimit = p_time0->seconds + seconds;
 	while(p_time0->seconds < slimit);
 }
-
 
 int kreadpass(char *buf, int count) 
 {
@@ -83,26 +82,26 @@ int kreadpass(char *buf, int count)
 }
 
 
-
-void klist_processes()
+int kget_procs(struct process *processes[])
 {
-	kprintf(" PID        STATE        MEMORY        PROGRAM\n");
-			
 	struct proc *p;
+	int count = 0;
 	for(int i = 1; i < NPROCS; i++)
 	{
 		p = &procs[i];
 		if(p->state != ZOMBIE && p->state != UNUSED)
 		{
-			kprintf("  %d        ", p->pid);
+			strcpy(processes[count]->name, p->name);
+			processes[count]->pid = p->pid;
 			if(p->pid != curr_proc->pid)
-				kprintf("inactive     ");
+				processes[count]->state = 0;
 			else
-				kprintf("running      ");
-
-			kprintf(" %d         %s\n", p->size, p->name);
+				processes[count]->state = 1;
+			processes[count]->size = p->size;
+			count++;
 		}
-	}
+	}	
+	return count;
 }
 
 unsigned int kget_boottime()
@@ -116,11 +115,11 @@ int ksetlogin(char *username)
 	if(strlen(username) == 0)
 		return -1;
 
-	strncpy(curr_proc->loginname, username, 64);
+	strncpy(curr_proc->owner_name, username, 64);
 	return 0;
 }
 
 void kgetlogin(char buf[])
 {
-	strcpy(buf, curr_proc->loginname);
+	strcpy(buf, curr_proc->owner_name);
 }

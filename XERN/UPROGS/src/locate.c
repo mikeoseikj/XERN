@@ -3,12 +3,12 @@
 #include "include/string.h"
 #include "include/stat.h"
 #include "include/fcntl.h"
+#include "include/regex.h"
 
 
 void find_patterns(char *root, char *pattern)
 {
 	char *path = sbrk(1); // We will use around 3KiB -- malloc() has not been implemented yet
-
 	int fd = open(root, O_DIRECTORY);
 	if(fd < 0)
 		return;
@@ -35,7 +35,7 @@ void find_patterns(char *root, char *pattern)
 		if(S_ISDIR(statbuf.st_mode))
 		{
 			
-			if(strstr(out, pattern))
+			if(regex_match(out, pattern))
 				printf("%s\n", out);
 
 			find_patterns(path, pattern);
@@ -44,7 +44,7 @@ void find_patterns(char *root, char *pattern)
 		else
 		{
 			
-			if(strstr(out, pattern))
+			if(regex_match(out, pattern))
 				printf("%s\n", out);
 		}
 		memset(path, 0, strlen(path));
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 {
 	if(argc < 2)
 	{
-		printf("usage: %s  <search pattern>\n", argv[0]);
+		printf("usage: %s  <pattern>\n", argv[0]);
 		return -1;
 	}
 	char *root = "/root";

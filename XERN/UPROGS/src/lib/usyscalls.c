@@ -176,9 +176,9 @@ int readpass(char *buf, int count)
     return syscall(SYS_readpass, buf, count);
 }
 
-void list_processes()
+int get_procs(struct process *processes[])
 {
-    syscall(SYS_plist);
+    return syscall(SYS_plist, processes);
 }
 
 unsigned int get_boottime()

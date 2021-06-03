@@ -62,14 +62,14 @@ int (*syscalls[])() =
     [SYS_chmod]      kchmod,
     [SYS_fexist]     kfexist,
     [SYS_readpass]   kreadpass,
-    [SYS_plist]      klist_processes,
+    [SYS_plist]      kget_procs,
     [SYS_btime]      kget_boottime,
     [SYS_setlogin]   ksetlogin,
     [SYS_getlogin]   kgetlogin
 };
 
 /* Currently, all the functions uses at most 3 args. So, doing it this way is sufficient */
-int swi_chandler(unsigned int number, int arg1, int arg2, int arg3)
+int swi_chandler(unsigned int number, unsigned int arg1, unsigned int arg2, unsigned int arg3)
 {
     if(number > 38) // Current we have only 39 syscalls starting from syscall 0 
     {

@@ -7,12 +7,14 @@ int main()
 	puts("chown:    Change owner of a file or folder\n");
 	puts("cp:       For copying files\n");
 	puts("echo:     For writing strings to STDOUT\n");
-	puts("grep:     For finding patterns in a file\n");
+	puts("grep:     For finding a regex pattern in a file\n");
+	puts("fgrep:    For finding a text pattern in a file\n");
 	puts("help:     For listing shell commands\n");
 	puts("id:       For checking current user GID and UID\n");
 	puts("kill:     For terminating a running process\n");
 	puts("ln:       For creating hard and soft links\n");
-	puts("locate:   For finding files and folders in the filesystem using patterns\n");
+	puts("locate:   For finding files and folders in the filesystem using a regex pattern\n");
+	puts("flocate:  For finding files and folders in the filesystem using a text pattern\n");
 	puts("ls:       For listing directories\n");
 	puts("mkdir:    For creating folders\n");
 	puts("mv:       For moving files\n");
